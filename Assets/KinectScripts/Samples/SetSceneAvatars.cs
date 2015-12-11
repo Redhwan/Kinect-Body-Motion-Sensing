@@ -18,6 +18,7 @@ public class SetSceneAvatars : MonoBehaviour
 			foreach(AvatarController avatar in avatars)
 			{
 				manager.Player1Avatars.Add(avatar.gameObject);
+                
 			}
 			
 			manager.ResetAvatarControllers();
