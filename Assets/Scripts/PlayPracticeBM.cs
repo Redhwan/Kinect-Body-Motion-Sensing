@@ -5,8 +5,9 @@ using System.Collections;
 public class PlayPracticeBM : ButtonManager {
 
 	public GameObject pauseMenuBackground;
-	public Text pauseButtonText;
-	public GameObject[] buttonList;
+	//public Text pauseButtonText;
+	public GameObject pauseButton;
+    public GameObject[] buttonList;
 	private bool isPaused;
 
 	// Use this for initialization
@@ -20,19 +21,20 @@ public class PlayPracticeBM : ButtonManager {
 
 	public void onClickPause () {
 
-		if (!isPaused) {
-			pauseMenuHandler(true, "Continue");
-		} else {
+	//	if (!isPaused) {
+	//		pauseMenuHandler(true, "Continue");
+	//	} else {
 			pauseMenuHandler(false, "Pause");
-		}
+	//	}
 
 	}
 	
 	public virtual void pauseMenuHandler (bool b, string pauseStr) {
 
 		pauseMenuBackground.SetActive (b);
-		pauseButtonText.text = pauseStr;
-		foreach (GameObject g in buttonList) {
+        pauseButton.SetActive(b);
+        //pauseButtonText.text = pauseStr;
+        foreach (GameObject g in buttonList) {
 			g.SetActive (b);
 		}
 		isPaused = b;

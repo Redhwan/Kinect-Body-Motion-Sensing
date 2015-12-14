@@ -188,26 +188,6 @@ public class KinectManager : MonoBehaviour
 	private SelfIntersectionConstraint selfIntersectionConstraint;
 
 
-
-	//-------------------------------------------------------------TEST------------------------------------------------------------//
-	private GameObject cursor;
-	private GUIText calText;
-
-	
-
-//	public void Start(){
-//		cursor = GameObject.Find ("Cursor");
-////		calText = GameObject.Find ("CalibrationText").GetComponent<GUIText> ();
-//		
-//		HandCursor1 = cursor;
-//		CalibrationText = calText;
-//
-//	}
-	//-------------------------------------------------------------TEST------------------------------------------------------------//
-
-
-
-
 	// returns the single KinectManager instance
     public static KinectManager Instance
     {

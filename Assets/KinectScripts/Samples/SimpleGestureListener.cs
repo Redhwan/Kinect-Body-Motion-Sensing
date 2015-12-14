@@ -69,10 +69,11 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		}
 	}
 
-	public bool GestureCompleted (uint userId, int userIndex, KinectGestures.Gestures gesture, 
+	public virtual bool GestureCompleted (uint userId, int userIndex, KinectGestures.Gestures gesture, 
 	                              KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos)
 	{
 		string sGestureText = gesture + " detected";
+
 		if(gesture == KinectGestures.Gestures.Click)
 			sGestureText += string.Format(" at ({0:F1}, {1:F1})", screenPos.x, screenPos.y);
 		
