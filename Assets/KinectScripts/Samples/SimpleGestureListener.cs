@@ -19,13 +19,15 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		manager.DetectGesture(userId, KinectGestures.Gestures.Jump);
 		manager.DetectGesture(userId, KinectGestures.Gestures.Squat);
 
-//		manager.DetectGesture(userId, KinectGestures.Gestures.Push);
-//		manager.DetectGesture(userId, KinectGestures.Gestures.Pull);
-		
-//		manager.DetectGesture(userId, KinectWrapper.Gestures.SwipeUp);
-//		manager.DetectGesture(userId, KinectWrapper.Gestures.SwipeDown);
-		
-		if(GestureInfo != null)
+		manager.DetectGesture(userId, KinectGestures.Gestures.Tpose);
+
+        //		manager.DetectGesture(userId, KinectGestures.Gestures.Push);
+        //		manager.DetectGesture(userId, KinectGestures.Gestures.Pull);
+
+        //		manager.DetectGesture(userId, KinectWrapper.Gestures.SwipeUp);
+        //		manager.DetectGesture(userId, KinectWrapper.Gestures.SwipeDown);
+
+        if (GestureInfo != null)
 		{
 			GestureInfo.guiText.text = "SwipeLeft, SwipeRight, Jump or Squat.";
 		}

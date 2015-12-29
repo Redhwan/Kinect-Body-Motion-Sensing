@@ -188,6 +188,19 @@ public class KinectManager : MonoBehaviour
 	private SelfIntersectionConstraint selfIntersectionConstraint;
 
 
+    //--------------------------TESTESTESTEST-----------------------
+
+   // public bool goForIt;
+
+    //--------------------------------------------------------------
+
+
+   // public void Start() {
+
+   //     goForIt = true;
+
+   // }
+
 	// returns the single KinectManager instance
     public static KinectManager Instance
     {
@@ -1150,74 +1163,61 @@ public class KinectManager : MonoBehaviour
 				// Check for complete gestures
 				foreach(KinectGestures.GestureData gestureData in player1Gestures)
 				{
-					if(gestureData.complete)
-					{
-						if(gestureData.gesture == KinectGestures.Gestures.Click)
-						{
-							if(ControlMouseCursor)
-							{
-								MouseControl.MouseClick();
-							}
-						}
-						
-						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
-						{
-							if(listener.GestureCompleted(Player1ID, 0, gestureData.gesture, 
-							                             (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint, gestureData.screenPos))
-							{
-								ResetPlayerGestures(Player1ID);
-							}
-						}
-					}
-					else if(gestureData.cancelled)
-					{
-						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
-						{
-							if(listener.GestureCancelled(Player1ID, 0, gestureData.gesture, 
-							                             (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint))
-							{
-								ResetGesture(Player1ID, gestureData.gesture);
-							}
-						}
-					}
-					else if(gestureData.progress >= 0.1f)
-					{
-						if((gestureData.gesture == KinectGestures.Gestures.RightHandCursor || 
-							gestureData.gesture == KinectGestures.Gestures.LeftHandCursor) && 
-							gestureData.progress >= 0.5f)
-						{
-							if(GetGestureProgress(gestureData.userId, KinectGestures.Gestures.Click) < 0.3f)
-							{
-								if(HandCursor1 != null)
-								{
-									Vector3 vCursorPos = gestureData.screenPos;
-									
-									if(HandCursor1.guiTexture == null)
-									{
-										float zDist = HandCursor1.transform.position.z - Camera.main.transform.position.z;
-										vCursorPos.z = zDist;
-										
-										vCursorPos = Camera.main.ViewportToWorldPoint(vCursorPos);
-									}
+                
+                        if (gestureData.complete) {
+                            if (gestureData.gesture == KinectGestures.Gestures.Click) {
+                                if (ControlMouseCursor) {
+                                    MouseControl.MouseClick();
+                                }
+                            }
 
-									HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 3 * Time.deltaTime);
-								}
-								
-								if(ControlMouseCursor)
-								{
-									Vector3 vCursorPos = HandCursor1.guiTexture != null ? HandCursor1.transform.position :
-										Camera.main.WorldToViewportPoint(HandCursor1.transform.position);
-									MouseControl.MouseMove(vCursorPos, CalibrationText);
-								}
-							}
-						}
-			
-						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
-						{
-							listener.GestureInProgress(Player1ID, 0, gestureData.gesture, gestureData.progress, 
-							                           (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint, gestureData.screenPos);
-						}
-					}
+  
+
+                            foreach (KinectGestures.GestureListenerInterface listener in gestureListeners) {
+                                if (listener.GestureCompleted(Player1ID, 0, gestureData.gesture,
+                                                             (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint, gestureData.screenPos)) {
+                                    ResetPlayerGestures(Player1ID);
+                                }
+                            }
+                        
+                    } else if (gestureData.cancelled) {
+                        foreach (KinectGestures.GestureListenerInterface listener in gestureListeners) {
+                            if (listener.GestureCancelled(Player1ID, 0, gestureData.gesture,
+                                                         (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint)) {
+                                ResetGesture(Player1ID, gestureData.gesture);
+                            }
+                        }
+                    } else if (gestureData.progress >= 0.1f/* && goForIt*/) {
+                        if ((gestureData.gesture == KinectGestures.Gestures.RightHandCursor ||
+                            gestureData.gesture == KinectGestures.Gestures.LeftHandCursor) &&
+                            gestureData.progress >= 0.5f) {
+                            if (GetGestureProgress(gestureData.userId, KinectGestures.Gestures.Click) < 0.3f) {
+                                if (HandCursor1 != null) {
+                                    Vector3 vCursorPos = gestureData.screenPos;
+
+                                    if (HandCursor1.guiTexture == null) {
+                                        float zDist = HandCursor1.transform.position.z - Camera.main.transform.position.z;
+                                        vCursorPos.z = zDist;
+
+                                        vCursorPos = Camera.main.ViewportToWorldPoint(vCursorPos);
+                                    }
+
+                                    HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, vCursorPos, 3 * Time.deltaTime);
+                                }
+
+                                if (ControlMouseCursor) {
+                                    Vector3 vCursorPos = HandCursor1.guiTexture != null ? HandCursor1.transform.position :
+                                        Camera.main.WorldToViewportPoint(HandCursor1.transform.position);
+                                    MouseControl.MouseMove(vCursorPos, CalibrationText);
+                                }
+                            }
+                        }
+
+                        foreach (KinectGestures.GestureListenerInterface listener in gestureListeners) {
+                            listener.GestureInProgress(Player1ID, 0, gestureData.gesture, gestureData.progress,
+                                                       (KinectWrapper.NuiSkeletonPositionIndex)gestureData.joint, gestureData.screenPos);
+                        }
+                    }
 				}
 			}
 			

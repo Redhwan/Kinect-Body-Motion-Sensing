@@ -3,12 +3,15 @@ using System.Collections;
 
 public class MainMenuController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    private KinectManager km;
+
+    // Use this for initialization
+    void Start () {
         // When coming back from Play/PRactice screen, clear the avatar list as it doesnt look for destoyed avatar
         // and reset controller so it recognises the user
 
         KinectManager manager = KinectManager.Instance;
+
 
         if (manager) {
 
