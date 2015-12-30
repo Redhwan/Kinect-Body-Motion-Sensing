@@ -7,6 +7,11 @@ public class MainMenuController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        //Trying to hide the cursor
+
+      //  Screen.lockCursor = false;
+        Screen.showCursor = false;
+
         // When coming back from Play/PRactice screen, clear the avatar list as it doesnt look for destoyed avatar
         // and reset controller so it recognises the user
 

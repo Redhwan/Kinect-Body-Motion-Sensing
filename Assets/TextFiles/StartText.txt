@@ -1,8 +1,10 @@
-
-Hi
-Welcome to my game
-This is a test text file
-
-Still Testing Broooooo
-
-Bye Bro
+Hello, welcome to my game. I am going to teach you how to perform some karate moves... I hope.
+I will show you the moves, then you will repeat after me.
+Let's get started.
+The fist move is called "A", watch closely.
+ShowGesture
+Okay, so if you got that swipe right. If you want me to show you again, swipe left.
+Great so now its your turn. :)
+DoGesture
+Well done!...
+Now lets move on to the next one! ;)
