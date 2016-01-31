@@ -43,9 +43,10 @@ public class PlayPracticeController : SimpleGestureListener {
         gesturePerformed = false;
 
 
-//Reads each new line into and array index.
-        if (textFile != null)
+        //Reads each new line into and array index.
+        if (textFile != null) {
             TextLines = (textFile.text.Split('\n'));
+        }
 
         curLine = 0;
         endLine = TextLines.Length - 1;
@@ -70,8 +71,9 @@ public class PlayPracticeController : SimpleGestureListener {
 
         } else if (userPerformingGesture) {
 
-            if (gesturePerformed)
+            if (gesturePerformed) {
                 gestureIsDone();
+            }
 
         } else {
 
@@ -107,7 +109,7 @@ public class PlayPracticeController : SimpleGestureListener {
 // Basically cant do any of the below gestures while the game is paused.
         if (!isPaused) {
 
-           //If the Teacher is showing a guesture, you can pause the game, also swipeup and swipe right wont be done so not
+           //If the Teacher is showing a guesture, you cant pause the game, also swipeup and swipe right wont be done so not
            // to mess up the bools
             if (!isShowingGesture) {
 

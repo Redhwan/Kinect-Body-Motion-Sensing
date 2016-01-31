@@ -14,7 +14,7 @@ public class GetJointPositionDemo : MonoBehaviour
 	public bool isSaving = false;
 
 	// how many seconds to save data into the csv file, or 0 to save non-stop
-	public float secondsToSave = 0f;
+	public float secondsToSave = 5f;
 
 	// path to the csv file (;-limited)
 	public string saveFilePath = "joint_pos.csv";

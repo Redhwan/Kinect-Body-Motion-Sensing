@@ -53,7 +53,8 @@ public class KinectGestures
 		Jump,
 		Squat,
 		Push,
-		Pull
+		Pull,
+        TestGesture
 	}
 	
 	
@@ -240,6 +241,7 @@ public class KinectGestures
 				switch(gestureData.state)
 				{
 					case 0:  // gesture detection
+                       
 						if(jointsTracked[rightHandIndex] && jointsTracked[rightShoulderIndex] &&
 					       (jointsPos[rightHandIndex].y - jointsPos[rightShoulderIndex].y) > 0.1f)
 						{
@@ -654,6 +656,7 @@ public class KinectGestures
 					       	(jointsPos[rightHandIndex].y - jointsPos[leftElbowIndex].y) < 0.0f &&
 				   	        (jointsPos[rightHandIndex].y - jointsPos[leftElbowIndex].y) > -0.15f)
 						{
+                            //Debug.Log("Right Hand Index Y : " + (int)(jointsPos[rightHandIndex].y) + " Left Elbow Index Y : " + (int)(jointsPos[leftElbowIndex].y));
 							SetGestureJoint(ref gestureData, timestamp, rightHandIndex, jointsPos[rightHandIndex]);
 							gestureData.progress = 0.5f;
 						}
@@ -1103,8 +1106,29 @@ public class KinectGestures
 				}
 				break;
 
-			// here come more gesture-cases
-		}
+            // Custom Gestures..... pffft...
+
+            // check for TestGesture
+            case Gestures.TestGesture:
+                switch (gestureData.state) {
+                    case 0:  // gesture detection - phase 1
+                        Debug.Log("Right Hand X " + jointsPos[rightHandIndex].x + "\n Right Elbow X " + jointsPos[rightElbowIndex].x);
+                        Debug.Log("Checking Forearm Position...");
+                        if(jointsPos[rightHandIndex].x < jointsPos[rightElbowIndex].x){
+                            Debug.Log(" Forearm could be in position");
+                        } else {
+                            Debug.Log("Nope");
+                        }
+
+                        break;
+
+                 
+                }
+                break;
+
+
+                // here come more gesture-cases
+        }
 	}
 
 }

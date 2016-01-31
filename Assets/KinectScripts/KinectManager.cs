@@ -188,18 +188,6 @@ public class KinectManager : MonoBehaviour
 	private SelfIntersectionConstraint selfIntersectionConstraint;
 
 
-    //--------------------------TESTESTESTEST-----------------------
-
-   // public bool goForIt;
-
-    //--------------------------------------------------------------
-
-
-   // public void Start() {
-
-   //     goForIt = true;
-
-   // }
 
 	// returns the single KinectManager instance
     public static KinectManager Instance
@@ -1187,7 +1175,7 @@ public class KinectManager : MonoBehaviour
                                 ResetGesture(Player1ID, gestureData.gesture);
                             }
                         }
-                    } else if (gestureData.progress >= 0.1f/* && goForIt*/) {
+                    } else if (gestureData.progress >= 0.1f) {
                         if ((gestureData.gesture == KinectGestures.Gestures.RightHandCursor ||
                             gestureData.gesture == KinectGestures.Gestures.LeftHandCursor) &&
                             gestureData.progress >= 0.5f) {
@@ -1835,13 +1823,15 @@ public class KinectManager : MonoBehaviour
 									gestureTrackingAtTime[0] = timestampNow + MinTimeBetweenGestures;
 								}
 
-								//if(gestureData.state > 0)
-								{
-									sDebugGestures += string.Format("{0} - state: {1}, time: {2:F1}, progress: {3}%\n", 
-									                            	gestureData.gesture, gestureData.state, 
-									                                gestureData.timestamp,
-									                            	(int)(gestureData.progress * 100 + 0.5f));
-								}
+                                //if(gestureData.state > 0)
+                                //       -----------------------------------------------------------
+                                /*							{
+                                                                sDebugGestures += string.Format("{0} - state: {1}, time: {2:F1}, progress: {3}%\n", 
+                                                                                                gestureData.gesture, gestureData.state, 
+                                                                                                gestureData.timestamp,
+                                                                                                (int)(gestureData.progress * 100 + 0.5f));
+                                                            }*/
+                                //------------------------------------------
 							}
 						}
 
@@ -1855,7 +1845,7 @@ public class KinectManager : MonoBehaviour
 							                                player1JointsPos[(int)KinectWrapper.NuiSkeletonPositionIndex.ElbowLeft].ToString() : "");
 							sDebugGestures += string.Format("\n ElbowRight: {0}", player1JointsTracked[(int)KinectWrapper.NuiSkeletonPositionIndex.ElbowRight] ?
 							                                player1JointsPos[(int)KinectWrapper.NuiSkeletonPositionIndex.ElbowRight].ToString() : "");
-
+/*                          ----------------------------------------------
 							sDebugGestures += string.Format("\n ShoulderLeft: {0}", player1JointsTracked[(int)KinectWrapper.NuiSkeletonPositionIndex.ShoulderLeft] ?
 							                                player1JointsPos[(int)KinectWrapper.NuiSkeletonPositionIndex.ShoulderLeft].ToString() : "");
 							sDebugGestures += string.Format("\n ShoulderRight: {0}", player1JointsTracked[(int)KinectWrapper.NuiSkeletonPositionIndex.ShoulderRight] ?
@@ -1869,7 +1859,7 @@ public class KinectManager : MonoBehaviour
 							                                player1JointsPos[(int)KinectWrapper.NuiSkeletonPositionIndex.HipLeft].ToString() : "");
 							sDebugGestures += string.Format("\n HipRight: {0}", player1JointsTracked[(int)KinectWrapper.NuiSkeletonPositionIndex.HipRight] ?
 							                                player1JointsPos[(int)KinectWrapper.NuiSkeletonPositionIndex.HipRight].ToString() : "");
-
+*///                       --------------------------------------------------
 							GesturesDebugText.guiText.text = sDebugGestures;
 						}
 					}
