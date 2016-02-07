@@ -1,10 +1,22 @@
 Hello, welcome to my game. I am going to teach you how to perform some karate moves... I hope.
 I will show you the moves, then you will repeat after me.
 Let's get started.
-The fist move is called "A", watch closely.
+It is ettiquite to bow at the beeggining of every seoins. This is how you bow.
 ShowGesture
 Okay, so if you got that swipe right. If you want me to show you again, swipe left.
 Great so now its your turn. :)
 DoGesture
 Well done!...
 Now lets move on to the next one! ;)
+This move is called AgeUke (Upward block)
+I'll show you.
+ShowGesture
+Got it?
+DoGesture
+Nice! Very good. Now I will move on to the final move.
+This one is called MaeGeri (forward kick)
+Watch closely 
+ShowGesture
+Okay, got it?
+DoGesture
+Nice! Well done. Thats all for today. Good work.

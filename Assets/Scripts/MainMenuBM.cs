@@ -24,4 +24,8 @@ public class MainMenuBM : MonoBehaviour {
 		Application.LoadLevel (5);
 	}
 
+    public void onClickPong() { //Pong Screen
+        Application.LoadLevel(6);
+    }
+
 }

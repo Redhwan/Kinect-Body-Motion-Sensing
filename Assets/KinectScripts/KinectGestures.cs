@@ -54,7 +54,9 @@ public class KinectGestures
 		Squat,
 		Push,
 		Pull,
-        TestGesture
+        Bow,
+        AgeUke,
+        MaeGeri
 	}
 	
 	
@@ -93,9 +95,17 @@ public class KinectGestures
 	private const int shoulderCenterIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.ShoulderCenter;
 	private const int leftHipIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.HipLeft;
 	private const int rightHipIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.HipRight;
-	
-	
-	private static void SetGestureJoint(ref GestureData gestureData, float timestamp, int joint, Vector3 jointPos)
+
+
+    //-------------------------Added-----------------------------
+
+    private const int rightFootIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.FootRight;
+    private const int leftFootIndex = (int)KinectWrapper.NuiSkeletonPositionIndex.FootLeft;
+
+    //------------------------------------------------------------
+
+
+    private static void SetGestureJoint(ref GestureData gestureData, float timestamp, int joint, Vector3 jointPos)
 	{
 		gestureData.joint = joint;
 		gestureData.jointPos = jointPos;
@@ -332,7 +342,7 @@ public class KinectGestures
 								Mathf.Abs(jointsPos[leftHandIndex].y - jointsPos[leftShoulderIndex].y) < 0.1f;
 						
 						Vector3 jointPos = jointsPos[gestureData.joint];
-						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, KinectWrapper.Constants.PoseCompleteDuration);
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose,/* KinectWrapper.Constants.PoseCompleteDuration*/ 0.0f);
 						break;
 				}
 				break;
@@ -1108,24 +1118,193 @@ public class KinectGestures
 
             // Custom Gestures..... pffft...
 
-            // check for TestGesture
-            case Gestures.TestGesture:
+            // check for Bow
+            case Gestures.Bow:
                 switch (gestureData.state) {
                     case 0:  // gesture detection - phase 1
-                        Debug.Log("Right Hand X " + jointsPos[rightHandIndex].x + "\n Right Elbow X " + jointsPos[rightElbowIndex].x);
-                        Debug.Log("Checking Forearm Position...");
-                        if(jointsPos[rightHandIndex].x < jointsPos[rightElbowIndex].x){
-                            Debug.Log(" Forearm could be in position");
-                        } else {
-                            Debug.Log("Nope");
+
+                        if (jointsTracked[shoulderCenterIndex] && 
+                            jointsTracked[rightHandIndex] && jointsTracked[rightHipIndex] && 
+                            jointsTracked[leftHandIndex] && jointsTracked[leftHipIndex] &&
+                            (gestureTop - jointsPos[shoulderCenterIndex].y) < 0.175f &&
+                            ((Mathf.Abs(jointsPos[rightHandIndex].x - jointsPos[rightHipIndex].x)) < 0.2) &&
+                            ((Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2)) {
+
+                            SetGestureJoint(ref gestureData, timestamp, shoulderCenterIndex, jointsPos[shoulderCenterIndex]);
                         }
 
                         break;
 
-                 
+                    case 1: //Gesture complete
+                        bool isInPose = jointsTracked[shoulderCenterIndex] &&
+                            jointsTracked[rightHandIndex] && jointsTracked[rightHipIndex] &&
+                            jointsTracked[leftHandIndex] && jointsTracked[leftHipIndex] &&
+                            (gestureTop - jointsPos[shoulderCenterIndex].y) < 0.175f &&
+                            (Mathf.Abs(jointsPos[rightHandIndex].x - jointsPos[rightHipIndex].x)) < 0.2 &&
+                            (Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2;
+
+                        Vector3 jointPos = jointsPos[gestureData.joint];
+                        CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+                        break;
+
+
+                        //----------------------------Body Movement----------------------------
+                        /*
+                        Debug.Log("Shoulder Center = " + jointsPos[shoulderCenterIndex].y);
+                        Debug.Log("Hip Center = " + jointsPos[hipCenterIndex].y);
+                        Debug.Log("Gesture Top = " + gestureTop);
+                        Debug.Log("Gesture Bottom = " + gestureBottom);
+                        Debug.Log("Difference = " + (gestureTop - jointsPos[shoulderCenterIndex].y));
+                        if(gestureTop - jointsPos[shoulderCenterIndex].y < 0.175) {
+                            Debug.Log("you are doing a Bow");
+                        } else {
+                            Debug.Log("Not quite there yet!");
+                        }*/
+
+
+                        //----------------------------Hands Movement----------------------------
+                        /*  Debug.Log("Right Hand = " + jointsPos[rightHandIndex].x);
+                          Debug.Log("Right Hip = " + jointsPos[rightHipIndex].x);
+                          Debug.Log("Right Difference = " + (Mathf.Abs(jointsPos[rightHandIndex].x - jointsPos[rightHipIndex].x)));
+                          Debug.Log("Left Hand = " + jointsPos[leftHandIndex].x);
+                          Debug.Log("Left Hip = " + jointsPos[leftHipIndex].x);
+                          Debug.Log("Left Difference = " + (Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)));
+                          if((Mathf.Abs(jointsPos[rightHandIndex].x - jointsPos[rightHipIndex].x)) < 0.2 &&
+                              (Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2) {
+
+                              Debug.Log("Could be in bow");
+                          } else {
+                              Debug.Log("Hands are too wide");
+                          }*/
+
+
+                        //----------------------------Feet movement----------------------------
+                        // will implement when i have more room to do so....
+
+
+                     
+
+
                 }
                 break;
 
+
+            // check for AgeUke
+            case Gestures.AgeUke:
+                switch (gestureData.state) {
+                    case 0:  // gesture detection - phase 1 
+
+                        if (jointsTracked[rightHandIndex] && jointsTracked[rightElbowIndex] &&
+                            jointsTracked[leftHandIndex] && jointsTracked[leftHipIndex] &&
+                            (jointsPos[rightHandIndex].x < jointsPos[rightElbowIndex].x) &&
+                            (jointsPos[rightHandIndex].y > gestureTop) &&
+                            ((Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2)) {
+
+                            SetGestureJoint(ref gestureData, timestamp, rightHandIndex, jointsPos[rightHandIndex]);
+                        }
+
+                        break;
+
+
+                    case 1: //Gesture complete
+                        bool isInPose = jointsTracked[rightHandIndex] && jointsTracked[rightElbowIndex] &&
+                            jointsTracked[leftHandIndex] && jointsTracked[leftHipIndex] &&
+                            (jointsPos[rightHandIndex].x < jointsPos[rightElbowIndex].x) &&
+                            (jointsPos[rightHandIndex].y > gestureTop) &&
+                            ((Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2);
+
+                        Vector3 jointPos = jointsPos[gestureData.joint];
+                        CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+                        break;
+
+
+                        //----------------------------right hand to the left of right elbow-----------------------------
+                        /*  Debug.Log("Right Hand X " + jointsPos[rightHandIndex].x + "\n Right Elbow X " + jointsPos[rightElbowIndex].x);
+                          Debug.Log("Checking Forearm Position...");
+                          if(jointsPos[rightHandIndex].x < jointsPos[rightElbowIndex].x){
+                              Debug.Log(" Forearm could be in position");
+                          } else {
+                              Debug.Log("Nope");
+                          }*/
+
+                        //----------------------------right hand above head-----------------------------
+                        /*Debug.Log("Right Hand = " + jointsPos[rightHandIndex].y);
+                        Debug.Log("Center Shoulder = " + jointsPos[shoulderCenterIndex].y);
+                        Debug.Log("Gesture Top = " + gestureTop);
+                        if(jointsPos[rightHandIndex].y > gestureTop) {
+                            Debug.Log("You could be in position");
+                        } else {
+
+                            Debug.Log("Nope");
+                        }*/
+
+                        //----------------------------left hand close to hip-----------------------------
+                        /* if((Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[leftHipIndex].x)) < 0.2) {
+                             Debug.Log("Left hand is good");
+                         } else {
+                             Debug.Log("Nope");
+                         }*/
+
+                }
+                break;
+
+
+            // check for MaeGeri
+            case Gestures.MaeGeri:
+                switch (gestureData.state) {
+                    case 0:  // gesture detection - phase 1 
+
+                        if ( jointsTracked[leftHandIndex] && jointsTracked[leftElbowIndex] && jointsTracked[rightHandIndex] && jointsTracked[rightElbowIndex] &&
+                            jointsTracked[rightFootIndex] && jointsTracked[hipCenterIndex] && 
+                             jointsPos[leftHandIndex].y > jointsPos[leftElbowIndex].y &&
+                             jointsPos[rightHandIndex].y > jointsPos[rightElbowIndex].y &&
+                             jointsPos[leftHandIndex].y > jointsPos[rightHandIndex].y &&
+                             jointsPos[rightFootIndex].y > (jointsPos[hipCenterIndex].y) / 2) {
+
+                            SetGestureJoint(ref gestureData, timestamp, rightFootIndex, jointsPos[rightFootIndex]);
+                        }
+
+                        break;
+
+                    case 1: //Gesture complete
+                        bool isInPose = jointsPos[leftHandIndex].y > jointsPos[leftElbowIndex].y &&
+                             jointsPos[rightHandIndex].y > jointsPos[rightElbowIndex].y &&
+                             jointsPos[leftHandIndex].y > jointsPos[rightHandIndex].y &&
+                             jointsPos[rightFootIndex].y > (jointsPos[hipCenterIndex].y) / 2;
+
+                        Vector3 jointPos = jointsPos[gestureData.joint];
+                        CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, 0f);
+                        break;
+
+                        //----------------------------hands are in stance position-----------------------------
+                        /*  Debug.Log("Left Hand Y: " + jointsPos[leftHandIndex].y);
+                          Debug.Log("Left Elbow Y: " + jointsPos[leftElbowIndex].y);
+                          Debug.Log("Right Hand Y: " + jointsPos[rightHandIndex].y);
+                          Debug.Log("Right Elbow Y: " + jointsPos[rightElbowIndex].y);
+
+
+
+                          if (jointsPos[leftHandIndex].y > jointsPos[leftElbowIndex].y &&
+                             jointsPos[rightHandIndex].y > jointsPos[rightElbowIndex].y &&
+                             jointsPos[leftHandIndex].y > jointsPos[rightHandIndex].y) {
+                              Debug.Log("Your hands are in position");
+                          } else {
+                              Debug.Log("Your hands ARE Not in position");
+                          }*/
+
+                        //----------------------------kicking with right foot-----------------------------
+
+                        /*  Debug.Log("Hip Center Y: " + jointsPos[hipCenterIndex].y);
+                          Debug.Log("Right foot Y: " + jointsPos[rightFootIndex].y);
+
+                          if (jointsPos[rightFootIndex].y > (jointsPos[hipCenterIndex].y) / 2) {
+                              Debug.Log("You are kicking... I think");
+                          } else {
+                              Debug.Log("You are NOT kicking eh");
+                          }*/
+                          
+                }
+                break;
 
                 // here come more gesture-cases
         }

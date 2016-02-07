@@ -21,6 +21,7 @@ public class PlayPracticeController : SimpleGestureListener {
     public int curLine, endLine;
     public bool swipedRight, swipedLeft;
     public bool checkGestureUnderstood, userPerformingGesture, gesturePerformed;
+    public int gestureNumber;
 
 
     
@@ -41,6 +42,7 @@ public class PlayPracticeController : SimpleGestureListener {
         checkGestureUnderstood = false;
         userPerformingGesture = false;
         gesturePerformed = false;
+        gestureNumber = 0;
 
 
         //Reads each new line into and array index.
@@ -70,6 +72,7 @@ public class PlayPracticeController : SimpleGestureListener {
             checkIfGestureUnderstood();
 
         } else if (userPerformingGesture) {
+
 
             if (gesturePerformed) {
                 gestureIsDone();
@@ -109,21 +112,40 @@ public class PlayPracticeController : SimpleGestureListener {
 // Basically cant do any of the below gestures while the game is paused.
         if (!isPaused) {
 
-           //If the Teacher is showing a guesture, you cant pause the game, also swipeup and swipe right wont be done so not
+           //If the Teacher is showing a guesture, you cant pause the game, also Bow and swipe right wont be done so not
            // to mess up the bools
             if (!isShowingGesture) {
 
-                if (gesture == KinectGestures.Gestures.Tpose)
-                     ppbm.pauseMenuHandler(true);
+                if (gesture == KinectGestures.Gestures.Tpose) {
+                    ppbm.pauseMenuHandler(true);
+                }
 
 
                 //This is for the user gesture, can only work when its time for the user to perfom
                 if (userPerformingGesture) {
-                    if (gesture == KinectGestures.Gestures.SwipeUp)
-                        gesturePerformed = true;
+
+                    if (gestureNumber == 0) {
+
+                        if (gesture == KinectGestures.Gestures.Bow)
+                            gesturePerformed = true;
+
+                    } else if (gestureNumber == 1) {
+
+                        if (gesture == KinectGestures.Gestures.AgeUke)
+                            gesturePerformed = true;
+
+                    } else if (gestureNumber == 2) {
+
+                        if (gesture == KinectGestures.Gestures.SwipeUp)
+                            gesturePerformed = true;
+
+                    }
+
+
+
                 } else {
 
-                    //Basically anyother time, you can swipe right
+                    //Basically anyother time, you can swipe right`
 
                     if (gesture == KinectGestures.Gestures.SwipeRight)
                         swipedRight = true;
@@ -190,6 +212,7 @@ public class PlayPracticeController : SimpleGestureListener {
         gesturePerformed = false;
         curLine += 1;
         textBox.SetActive(true);
+        gestureNumber++;
 
     }
 

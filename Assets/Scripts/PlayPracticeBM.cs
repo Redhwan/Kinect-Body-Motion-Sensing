@@ -20,7 +20,7 @@ public class PlayPracticeBM : ButtonManager {
         
 
 //Hide cursor and dont allow user to control it.
-        km.ControlMouseCursor = false;
+      //  km.ControlMouseCursor = false;
         ppc.cursor.SetActive(false);
     }
 
