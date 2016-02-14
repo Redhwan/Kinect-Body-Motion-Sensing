@@ -12,12 +12,12 @@ public class PlayButtonManager : ButtonManager {
     private GameObject cursor;
 
     private PlayPracticeController ppc;
-    private KinectManager km;
+    public KinectManager km;
     // Use this for initialization
     void Start(){
 
-        ppc = GameObject.FindObjectOfType<PlayPracticeController>();
-        km = GameObject.FindObjectOfType<KinectManager>();
+        ppc = FindObjectOfType<PlayPracticeController>();
+        km = FindObjectOfType<KinectManager>();
         cursor = GameObject.Find("Cursor");
 
 

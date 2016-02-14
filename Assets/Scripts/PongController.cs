@@ -11,10 +11,11 @@ public class PongController : SimpleGestureListener {
     public float ballVelocity;
     private Rigidbody rb;
     private bool test;
-    private bool gameOver, gameStarted, startCount, restart;
+    public bool gameOver, gameStarted, startCount, restart;
     private float timeLeft = 4;
     public Text counter;
     public int noOfCubes = 11;
+    private Vector3 temp;
 
 
 
@@ -70,6 +71,7 @@ public class PongController : SimpleGestureListener {
                 var mousePositioin = Input.mousePosition;
                 mousePositioin.z = 9.5f;
                 mousePositioin = Camera.main.ScreenToWorldPoint(mousePositioin);
+
                 //   Debug.Log(mousePositioin.x);
 
                 board.transform.position = (new Vector3(mousePositioin.x, board.transform.position.y, board.transform.position.z));
@@ -89,13 +91,17 @@ public class PongController : SimpleGestureListener {
 
 
         if (Input.GetKeyDown(KeyCode.P)) {
-            pbm.pauseMenuHandler(true);
-
-
-
+            temp = rb.velocity;
+            rb.velocity = new Vector3(0f, 0f, 0f);
+            //pbm.pauseMenuHandler(true);
         }
-	
-	}
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            rb.velocity = temp;
+            //pbm.pauseMenuHandler(true);
+        }
+
+    }
 
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
@@ -110,7 +116,9 @@ public class PongController : SimpleGestureListener {
 
 
         if (gameOver) {
+            Debug.Log("Its getting Here");
             if(gesture == KinectGestures.Gestures.SwipeRight) {
+                Debug.Log("HI");
                 restart = true;
             }
             if (gesture == KinectGestures.Gestures.SwipeLeft) {
@@ -122,6 +130,7 @@ public class PongController : SimpleGestureListener {
         return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
 
     }
+
 
     public void startGame() {
         gameStarted = true;
