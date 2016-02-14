@@ -66,10 +66,11 @@
      <Compile Include="Assets\KinectScripts\Samples\MouseControl.cs" />
      <Compile Include="Assets\KinectScripts\Samples\SetSceneAvatars.cs" />
      <Compile Include="Assets\KinectScripts\Samples\SimpleGestureListener.cs" />
+     <Compile Include="Assets\Scripts\BallTrigger.cs" />
      <Compile Include="Assets\Scripts\ButtonManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuBM.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
-     <Compile Include="Assets\Scripts\PlayPracticeBM.cs" />
+     <Compile Include="Assets\Scripts\PlayButtonManager.cs" />
      <Compile Include="Assets\Scripts\PlayPracticeController.cs" />
      <Compile Include="Assets\Scripts\PongController.cs" />
      <Compile Include="Assets\Scripts\SettingsBM.cs" />

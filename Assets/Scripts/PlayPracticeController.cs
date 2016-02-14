@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayPracticeController : SimpleGestureListener {
 
-    private PlayPracticeBM ppbm;
+    private PlayButtonManager pbm;
     private KinectManager km;
     public Text tstTxt;
 
@@ -13,9 +13,9 @@ public class PlayPracticeController : SimpleGestureListener {
     public Text dialogueText;
     public TextAsset textFile;
     public string[] TextLines;
-    public GameObject cursor;
+    //public GameObject cursor;
 
-    public bool isPaused;
+    //public bool isPaused;
     public bool isShowingGesture;
 
     public int curLine, endLine;
@@ -29,14 +29,14 @@ public class PlayPracticeController : SimpleGestureListener {
     // Use this for initialization
     void Start () {
 
-        ppbm = GameObject.FindObjectOfType<PlayPracticeBM>();
+        pbm = GameObject.FindObjectOfType<PlayButtonManager>();
         km = GameObject.FindObjectOfType<KinectManager>();
-        cursor = GameObject.Find("Cursor");
+     //   cursor = GameObject.Find("Cursor");
 
        
  //Setting all initial variables
         isShowingGesture = false;
-        isPaused = false;
+        pbm.isPaused = false;
         swipedRight = false;
         swipedLeft = false;
         checkGestureUnderstood = false;
@@ -58,8 +58,14 @@ public class PlayPracticeController : SimpleGestureListener {
     // Update is called once per frame.             
     void Update () {
 
+        if (Input.GetKeyDown(KeyCode.P)) {
+            pbm.pauseMenuHandler(true);
 
-//Showing the textLine with index currLine
+        }
+
+
+
+        //Showing the textLine with index currLine
         dialogueText.text = TextLines[curLine];
 
 
@@ -110,14 +116,14 @@ public class PlayPracticeController : SimpleGestureListener {
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
 
 // Basically cant do any of the below gestures while the game is paused.
-        if (!isPaused) {
+        if (!pbm.isPaused) {
 
            //If the Teacher is showing a guesture, you cant pause the game, also Bow and swipe right wont be done so not
            // to mess up the bools
             if (!isShowingGesture) {
 
                 if (gesture == KinectGestures.Gestures.Tpose) {
-                    ppbm.pauseMenuHandler(true);
+                    pbm.pauseMenuHandler(true);
                 }
 
 
@@ -136,7 +142,7 @@ public class PlayPracticeController : SimpleGestureListener {
 
                     } else if (gestureNumber == 2) {
 
-                        if (gesture == KinectGestures.Gestures.SwipeUp)
+                        if (gesture == KinectGestures.Gestures.MaeGeri)
                             gesturePerformed = true;
 
                     }

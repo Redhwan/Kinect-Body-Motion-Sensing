@@ -1,46 +1,141 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PongController : SimpleGestureListener {
 
-    private PlayPracticeBM ppbm;
+    private PlayButtonManager pbm;
     public GameObject board;
+    public GameObject ball;
     public GameObject cursor;
+    public float ballVelocity;
+    private Rigidbody rb;
+    private bool test;
+    private bool gameOver, gameStarted, startCount, restart;
+    private float timeLeft = 4;
+    public Text counter;
+    public int noOfCubes = 11;
+
+
 
     // Use this for initialization
     void Start() {
 
+        
 
-        ppbm = GameObject.FindObjectOfType<PlayPracticeBM>();
-
+        pbm = GameObject.FindObjectOfType<PlayButtonManager>();
+        rb = ball.GetComponent<Rigidbody>();
 
         //Hide cursor
-
         cursor = GameObject.Find("Cursor");
-       // cursor.SetActive(false);
+
+        gameStarted = false;
+        startCount = false;
+
+        Invoke("startGame", 3.0f);
+        startCount = true;
+
     }
 
     // Update is called once per frame
     void Update () {
 
-        float x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
 
-        board.transform.position = (new Vector3(x, board.transform.position.y, board.transform.position.z));
+        if (gameStarted) {
+            rb.AddForce(new Vector3(ballVelocity, ballVelocity, 0));
+            gameStarted = false;
+        }
 
-        Debug.Log("Mouse Position: " + Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
+        
+        if (startCount) {
+            
+            timeLeft -= Time.deltaTime;
+            counter.text = "" + (int)timeLeft;
+            if (timeLeft < 1) {
+                counter.text = "";
+                startCount = false;
+            }
+        }
+
+        if(noOfCubes == 0) {
+            gameIsWon();
+        }
+
+        if (!gameOver) {
+
+            
+
+            if (!pbm.isPaused) {
+
+                var mousePositioin = Input.mousePosition;
+                mousePositioin.z = 9.5f;
+                mousePositioin = Camera.main.ScreenToWorldPoint(mousePositioin);
+                //   Debug.Log(mousePositioin.x);
+
+                board.transform.position = (new Vector3(mousePositioin.x, board.transform.position.y, board.transform.position.z));
+
+            }
+        } else {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                restart = true;
+            }
+            if (restart) {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+
+        }
+
+        
+
+
+        if (Input.GetKeyDown(KeyCode.P)) {
+            pbm.pauseMenuHandler(true);
+
+
+
+        }
 	
 	}
 
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
 
-        if (gesture == KinectGestures.Gestures.Tpose) {
-            ppbm.pauseMenuHandler(true);
+        if (!pbm.isPaused) {
+
+            if (gesture == KinectGestures.Gestures.Tpose) {
+                pbm.pauseMenuHandler(true);
+            }
+
         }
 
+
+        if (gameOver) {
+            if(gesture == KinectGestures.Gestures.SwipeRight) {
+                restart = true;
+            }
+            if (gesture == KinectGestures.Gestures.SwipeLeft) {
+                Application.LoadLevel(1);
+            }
+        }
 
 
         return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
 
     }
+
+    public void startGame() {
+        gameStarted = true;
+    }
+
+    public void gameIsOver() {
+        gameOver = true;
+        counter.text = "Game Over\n Swipe Left to go to Main Menu, Swipe Right to retry";
+    }
+
+    public void gameIsWon() {
+        rb.velocity = new Vector3(0f, 0f, 0f);
+        gameOver = true;
+        counter.text = "Well Done!";
+    }
+
 }

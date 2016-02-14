@@ -2,13 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayPracticeBM : ButtonManager {
+public class PlayButtonManager : ButtonManager {
 
 	public GameObject pauseMenuBackground;
 	//public Text pauseButtonText;
 	public GameObject pauseButton;
     public GameObject[] buttonList;
-  
+    public bool isPaused;
+    private GameObject cursor;
 
     private PlayPracticeController ppc;
     private KinectManager km;
@@ -17,11 +18,12 @@ public class PlayPracticeBM : ButtonManager {
 
         ppc = GameObject.FindObjectOfType<PlayPracticeController>();
         km = GameObject.FindObjectOfType<KinectManager>();
-        
+        cursor = GameObject.Find("Cursor");
 
-//Hide cursor and dont allow user to control it.
-      //  km.ControlMouseCursor = false;
-        ppc.cursor.SetActive(false);
+
+        //Hide cursor and dont allow user to control it.
+        //km.ControlMouseCursor = false;
+        cursor.SetActive(false);
     }
 
 
@@ -41,8 +43,8 @@ public class PlayPracticeBM : ButtonManager {
         foreach (GameObject g in buttonList) {
 			g.SetActive (b);
 		}
-		ppc.isPaused = b;
-        ppc.cursor.SetActive(b);
+		isPaused = b;
+        cursor.SetActive(b);
         km.ControlMouseCursor = b;
 
     }
