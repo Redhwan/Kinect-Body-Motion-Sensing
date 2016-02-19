@@ -13,14 +13,14 @@ public class CubeController : MonoBehaviour {
     public int curDir, score;
     public ArrayList dirs;
     public Text directionText, scoreText, userText;
-    public bool gameOver, roundComplete, inRound, restart;
+    public bool gameOver, roundComplete, inRound, restart, backToMain;
 
-    public enum direction{
+  /*  public enum direction{
         up,
         down,
         right,
         left
-    }
+    }*/
 
     // Use this for initialization
     void Start () {
@@ -43,18 +43,26 @@ public class CubeController : MonoBehaviour {
 	void Update () {
 
         if (!gameOver) {
-           // checkRound();
-           // doMove();
-           // checkForMove();
-             moveCube();
+            checkRound();
+            doMove();
+            checkForMove();
+            //moveCube();
         } else {
             if (Input.GetKeyUp(KeyCode.R)) {
                 restart = true;
+            }
+            if (Input.GetKeyUp(KeyCode.Space)) {
+                backToMain = true;
             }
 
             if (restart) {
                 Application.LoadLevel(Application.loadedLevel);
             }
+
+            if (backToMain) {
+                Application.LoadLevel(1);
+            }
+
 
         } 
 
@@ -78,16 +86,17 @@ public class CubeController : MonoBehaviour {
 
 
     private void addDirection() {
-        direction temp = (direction)UnityEngine.Random.Range(0, 3);
+        Directions.direction temp = Directions.getRandomDirection();
+       // direction temp = (direction)UnityEngine.Random.Range(0, 3);
         dirs.Add(temp);
         directionText.text += temp + ", ";
 
     }
 
     public void checkForMove() {
-        direction temp = (direction)dirs[curDir];
+        Directions.direction temp = (Directions.direction)dirs[curDir];
         if (up) {
-            if(temp == direction.up) {
+            if(temp == Directions.direction.up) {
                 score++;
                 curDir++;
                 up = false;
@@ -97,7 +106,7 @@ public class CubeController : MonoBehaviour {
         }
 
         if (down) {
-            if (temp == direction.down) {
+            if (temp == Directions.direction.down) {
                 score++;
                 curDir++;
                 down = false;
@@ -107,7 +116,7 @@ public class CubeController : MonoBehaviour {
         }
 
         if (right) {
-            if (temp == direction.right) {
+            if (temp == Directions.direction.right) {
                 score++;
                 curDir++;
                 right = false;
@@ -117,7 +126,7 @@ public class CubeController : MonoBehaviour {
         }
 
         if (left) {
-            if (temp == direction.left) {
+            if (temp == Directions.direction.left) {
                 score++;
                 curDir++;
                 left = false;
@@ -187,7 +196,7 @@ public class CubeController : MonoBehaviour {
     
 
 
-    public void moveCube() {
+    public void debugMoveCube() {
         if (Input.GetKeyUp(KeyCode.RightArrow))
             verDegree += 90f;
         if (Input.GetKeyUp(KeyCode.LeftArrow))

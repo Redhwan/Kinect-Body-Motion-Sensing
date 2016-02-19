@@ -1,46 +1,65 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainMenuController : MonoBehaviour {
-
-    private KinectManager km;
-    private GameObject cursor;
+public class MainMenuController : SimpleGestureListener {
 
     // Use this for initialization
     void Start () {
-        cursor = GameObject.Find("Cursor");
-        
 
-        //Trying to hide the cursor
+        //TRY - static variable, with previous scene.. then add it in an if to see if coming from the karate scene.
+        checkForAvatar();
 
-        //  Screen.lockCursor = false;
-        Screen.showCursor = false;
-        
-        // When coming back from Play/PRactice screen, clear the avatar list as it doesnt look for destoyed avatar
-        // and reset controller so it recognises the user
+    }
 
-        KinectManager manager = KinectManager.Instance;
+    // Update is called once per frame
+    void Update () {
 
+        debugSelect();
 
-        if (manager) {
+    }
 
+    public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
 
-
-            for (int i = 0; i < manager.Player1Avatars.Count; i++) {
-
-                manager.Player1Avatars[i] = null;
-
-                
-            }
+        switch (gesture) {
+            case KinectGestures.Gestures.SwipeUp:
+                Application.LoadLevel(2);
+                break;
+            case KinectGestures.Gestures.SwipeRight:
+                Application.LoadLevel(3);
+                break;
+            case KinectGestures.Gestures.SwipeLeft:
+                Application.LoadLevel(4);
+                break;
+            case KinectGestures.Gestures.SwipeDown:
+                Application.LoadLevel(5);
+                break;
         }
 
+        return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
+    }
+
+    //Delete avatars and restart the controllers so the manager class does not look for the avater from the previous page (only if coming from the karate screen).
+    public void checkForAvatar() {
+
+        KinectManager manager = KinectManager.Instance;
+        if (manager) {
+            for (int i = 0; i < manager.Player1Avatars.Count; i++) {
+                manager.Player1Avatars[i] = null;
+            }
+        }
         manager.ResetAvatarControllers();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (cursor.activeInHierarchy == false) {
-            cursor.SetActive(true);
-        }	
-	}
+
+    public void debugSelect() {
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+            Application.LoadLevel(2);
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+            Application.LoadLevel(3);
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+            Application.LoadLevel(4);
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+            Application.LoadLevel(5);
+
+    }
 }

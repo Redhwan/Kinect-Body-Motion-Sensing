@@ -11,7 +11,7 @@ public class PongController : SimpleGestureListener {
     public float ballVelocity;
     private Rigidbody rb;
     private bool test;
-    public bool gameOver, gameStarted, startCount, restart;
+    public bool gameOver, gameStarted, startCount, restart, backToMain;
     private float timeLeft = 4;
     public Text counter;
     public int noOfCubes = 11;
@@ -81,10 +81,16 @@ public class PongController : SimpleGestureListener {
             if (Input.GetKeyDown(KeyCode.R)) {
                 restart = true;
             }
+            if (Input.GetKeyUp(KeyCode.Space)) {
+                backToMain = true;
+            }
+
             if (restart) {
                 Application.LoadLevel(Application.loadedLevel);
             }
-
+            if (backToMain) {
+                Application.LoadLevel(1);
+            }
         }
 
         
