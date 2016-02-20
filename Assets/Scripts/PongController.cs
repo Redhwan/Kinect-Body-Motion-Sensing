@@ -4,10 +4,9 @@ using System.Collections;
 
 public class PongController : SimpleGestureListener {
 
-    private PlayButtonManager pbm;
+    private PauseMenuHandler pmh;
     public GameObject board;
     public GameObject ball;
-    public GameObject cursor;
     public float ballVelocity;
     private Rigidbody rb;
     private bool test;
@@ -21,18 +20,11 @@ public class PongController : SimpleGestureListener {
 
     // Use this for initialization
     void Start() {
-
         
-
-        pbm = GameObject.FindObjectOfType<PlayButtonManager>();
+        pmh = FindObjectOfType<PauseMenuHandler>();
         rb = ball.GetComponent<Rigidbody>();
-
-        //Hide cursor
-        cursor = GameObject.Find("Cursor");
-
         gameStarted = false;
         startCount = false;
-
         Invoke("startGame", 3.0f);
         startCount = true;
 
@@ -41,41 +33,23 @@ public class PongController : SimpleGestureListener {
     // Update is called once per frame
     void Update () {
 
+        checkForCounter();
 
         if (gameStarted) {
             rb.AddForce(new Vector3(ballVelocity, ballVelocity, 0));
             gameStarted = false;
         }
-
         
-        if (startCount) {
-            
-            timeLeft -= Time.deltaTime;
-            counter.text = "" + (int)timeLeft;
-            if (timeLeft < 1) {
-                counter.text = "";
-                startCount = false;
-            }
-        }
-
         if(noOfCubes == 0) {
             gameIsWon();
         }
 
         if (!gameOver) {
-
-            
-
-            if (!pbm.isPaused) {
-
+            if (!pmh.isPaused) {
                 var mousePositioin = Input.mousePosition;
                 mousePositioin.z = 9.5f;
                 mousePositioin = Camera.main.ScreenToWorldPoint(mousePositioin);
-
-                //   Debug.Log(mousePositioin.x);
-
                 board.transform.position = (new Vector3(mousePositioin.x, board.transform.position.y, board.transform.position.z));
-
             }
         } else {
             if (Input.GetKeyDown(KeyCode.R)) {
@@ -99,32 +73,33 @@ public class PongController : SimpleGestureListener {
         if (Input.GetKeyDown(KeyCode.P)) {
             temp = rb.velocity;
             rb.velocity = new Vector3(0f, 0f, 0f);
-            //pbm.pauseMenuHandler(true);
+            //pmh.pauseMenuHandler(true);
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
             rb.velocity = temp;
-            //pbm.pauseMenuHandler(true);
+            //pmh.pauseMenuHandler(true);
         }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+            pmh.pause();
+
 
     }
 
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
 
-        if (!pbm.isPaused) {
+        if (!pmh.isPaused) {
 
             if (gesture == KinectGestures.Gestures.Tpose) {
-                pbm.pauseMenuHandler(true);
+                pmh.pause();
             }
 
         }
 
-
         if (gameOver) {
-            Debug.Log("Its getting Here");
             if(gesture == KinectGestures.Gestures.SwipeRight) {
-                Debug.Log("HI");
                 restart = true;
             }
             if (gesture == KinectGestures.Gestures.SwipeLeft) {
@@ -132,9 +107,7 @@ public class PongController : SimpleGestureListener {
             }
         }
 
-
         return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
-
     }
 
 
@@ -151,6 +124,18 @@ public class PongController : SimpleGestureListener {
         rb.velocity = new Vector3(0f, 0f, 0f);
         gameOver = true;
         counter.text = "Well Done!";
+    }
+
+    public void checkForCounter() {
+        if (startCount) {
+
+            timeLeft -= Time.deltaTime;
+            counter.text = "" + (int)timeLeft;
+            if (timeLeft < 1) {
+                counter.text = "";
+                startCount = false;
+            }
+        }
     }
 
 }

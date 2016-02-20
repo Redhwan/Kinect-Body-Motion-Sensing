@@ -5,17 +5,13 @@ public class MainMenuController : SimpleGestureListener {
 
     // Use this for initialization
     void Start () {
-
         //TRY - static variable, with previous scene.. then add it in an if to see if coming from the karate scene.
         checkForAvatar();
-
     }
 
     // Update is called once per frame
     void Update () {
-
         debugSelect();
-
     }
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {

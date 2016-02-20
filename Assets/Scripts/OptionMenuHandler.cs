@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SettingsBM : ButtonManager {
+public class OptionMenuHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

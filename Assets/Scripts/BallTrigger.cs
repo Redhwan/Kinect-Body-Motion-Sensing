@@ -7,7 +7,7 @@ public class BallTrigger : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        pongC = GameObject.FindObjectOfType<PongController>();
+        pongC = FindObjectOfType<PongController>();
     }
 	
 	// Update is called once per frame

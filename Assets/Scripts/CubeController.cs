@@ -5,6 +5,7 @@ using System.Text;
 
 public class CubeController : MonoBehaviour {
 
+    private PauseMenuHandler pmh;
     public GameObject cube;
     private float verDegree;
     private float horDegree;
@@ -15,58 +16,55 @@ public class CubeController : MonoBehaviour {
     public Text directionText, scoreText, userText;
     public bool gameOver, roundComplete, inRound, restart, backToMain;
 
-  /*  public enum direction{
-        up,
-        down,
-        right,
-        left
-    }*/
 
     // Use this for initialization
     void Start () {
-
+        pmh = FindObjectOfType<PauseMenuHandler>();
         speed = 10f;
         curDir = score = 0;
-        up = down = left = right = gameOver = false;
 
         dirs = new ArrayList();
 
         for (int i = 0; i < 3; i++) {
             addDirection();
         }
-        Debug.Log("Direction is: " + dirs[curDir]);
-
         showDirections();
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        if (!gameOver) {
-            checkRound();
-            doMove();
-            checkForMove();
-            //moveCube();
-        } else {
-            if (Input.GetKeyUp(KeyCode.R)) {
-                restart = true;
+        if (!pmh.isPaused) {
+            if (!gameOver) {
+                checkRound();
+                doMove();
+                checkForMove();
+                //moveCube();
+            } else {
+                if (Input.GetKeyUp(KeyCode.R)) {
+                    restart = true;
+                }
+                if (Input.GetKeyUp(KeyCode.Space)) {
+                    backToMain = true;
+                }
+
+                if (restart) {
+                    Application.LoadLevel(Application.loadedLevel);
+                }
+
+                if (backToMain) {
+                    Application.LoadLevel(1);
+                }
+
+
             }
-            if (Input.GetKeyUp(KeyCode.Space)) {
-                backToMain = true;
-            }
+        }
 
-            if (restart) {
-                Application.LoadLevel(Application.loadedLevel);
-            }
-
-            if (backToMain) {
-                Application.LoadLevel(1);
-            }
+        if (Input.GetKeyUp(KeyCode.Escape))
+            pmh.pause();
 
 
-        } 
-
-    }   
+        }   
     
     public void checkRound() {
         if (curDir == dirs.Count) {
@@ -87,7 +85,6 @@ public class CubeController : MonoBehaviour {
 
     private void addDirection() {
         Directions.direction temp = Directions.getRandomDirection();
-       // direction temp = (direction)UnityEngine.Random.Range(0, 3);
         dirs.Add(temp);
         directionText.text += temp + ", ";
 
@@ -142,7 +139,6 @@ public class CubeController : MonoBehaviour {
             scoreText.text = "" + score;
         }
 
-
     }
 
     public void showDirections() {
@@ -186,16 +182,11 @@ public class CubeController : MonoBehaviour {
                 left = true;
                 userText.text += "left, ";
             }
-
-
            
         }
         cube.transform.localRotation = Quaternion.Lerp(cube.transform.localRotation, Quaternion.Euler(horDegree, verDegree, 0), speed * Time.deltaTime);
-
     }
     
-
-
     public void debugMoveCube() {
         if (Input.GetKeyUp(KeyCode.RightArrow))
             verDegree += 90f;
@@ -205,12 +196,7 @@ public class CubeController : MonoBehaviour {
             horDegree += 90f;
         if (Input.GetKeyUp(KeyCode.DownArrow))
             horDegree -= 90f;
-
-
         print("Rotation: " + cube.transform.localRotation.eulerAngles);
         cube.transform.rotation = Quaternion.Lerp(cube.transform.rotation, Quaternion.Euler(horDegree, verDegree, 0),  Time.deltaTime);
-
     }
-
-
 }
