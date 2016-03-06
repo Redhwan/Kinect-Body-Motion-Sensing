@@ -54,7 +54,7 @@ public class KarateController : SimpleGestureListener {
            // to mess up the bools
             if (!isShowingGesture) {
                 if (gesture == KinectGestures.Gestures.Tpose) {
-                    pmh.pause();
+                    pmh.pause(true);
                 }
                 //This is for the user gesture, can only work when its time for the user to perfom
                 if (userPerformingGesture) {
@@ -159,10 +159,10 @@ public class KarateController : SimpleGestureListener {
     public void debugSelect() {
 
         if (Input.GetKeyDown(KeyCode.Escape))
-            pmh.pause();
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+            pmh.pause(true);
+        if (Input.GetKeyDown(KeyCode.RightArrow))
             swipedRight = true;
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
             swipedLeft = true;
     }
 }

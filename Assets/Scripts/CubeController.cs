@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Text;
 
-public class CubeController : MonoBehaviour {
+public class CubeController : SimpleGestureListener {
 
     private PauseMenuHandler pmh;
     public GameObject cube;
@@ -41,6 +41,11 @@ public class CubeController : MonoBehaviour {
                 checkForMove();
                 //moveCube();
             } else {
+
+
+
+
+
                 if (Input.GetKeyUp(KeyCode.R)) {
                     restart = true;
                 }
@@ -61,11 +66,35 @@ public class CubeController : MonoBehaviour {
         }
 
         if (Input.GetKeyUp(KeyCode.Escape))
-            pmh.pause();
+            pmh.pause(true);
 
 
-        }   
-    
+        }
+
+
+    public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
+        print("hi");
+        if (inRound) {
+            switch (gesture) {
+                case KinectGestures.Gestures.SwipeUp:
+
+                    up = true;
+                    break;
+                case KinectGestures.Gestures.SwipeRight:
+                    right = true;
+                    break;
+                case KinectGestures.Gestures.SwipeLeft:
+                    left = true;
+                    break;
+                case KinectGestures.Gestures.SwipeDown:
+                    down = true;
+                    break;
+            }
+        }
+
+        return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
+    }
+
     public void checkRound() {
         if (curDir == dirs.Count) {
             completeRound();
@@ -93,7 +122,9 @@ public class CubeController : MonoBehaviour {
     public void checkForMove() {
         Directions.direction temp = (Directions.direction)dirs[curDir];
         if (up) {
-            if(temp == Directions.direction.up) {
+            horDegree += 90f;
+            userText.text += "up, ";
+            if (temp == Directions.direction.up) {
                 score++;
                 curDir++;
                 up = false;
@@ -103,6 +134,8 @@ public class CubeController : MonoBehaviour {
         }
 
         if (down) {
+            horDegree -= 90f;
+            userText.text += "down, ";
             if (temp == Directions.direction.down) {
                 score++;
                 curDir++;
@@ -113,6 +146,8 @@ public class CubeController : MonoBehaviour {
         }
 
         if (right) {
+            verDegree += 90f;
+            userText.text += "right, ";
             if (temp == Directions.direction.right) {
                 score++;
                 curDir++;
@@ -123,6 +158,8 @@ public class CubeController : MonoBehaviour {
         }
 
         if (left) {
+            verDegree -= 90f;
+            userText.text += "left, ";
             if (temp == Directions.direction.left) {
                 score++;
                 curDir++;
@@ -139,6 +176,25 @@ public class CubeController : MonoBehaviour {
             scoreText.text = "" + score;
         }
 
+        cube.transform.localRotation = Quaternion.Lerp(cube.transform.localRotation, Quaternion.Euler(horDegree, verDegree, 0), speed * Time.deltaTime);
+
+    }
+
+    public void doMove() {
+        if (inRound) {
+            if (Input.GetKeyUp(KeyCode.UpArrow)) {
+                up = true;
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow)) {
+                down = true;
+            }
+            if (Input.GetKeyUp(KeyCode.RightArrow)) {
+                right = true;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+                left = true;
+            }
+        }
     }
 
     public void showDirections() {
@@ -159,33 +215,6 @@ public class CubeController : MonoBehaviour {
     }
 
 
-
-    public void doMove() {
-        if (inRound) {
-            if (Input.GetKeyUp(KeyCode.UpArrow)) {
-                horDegree += 90f;
-                up = true;
-                userText.text += "up, ";
-            }
-            if (Input.GetKeyUp(KeyCode.DownArrow)) {
-                horDegree -= 90f;
-                down = true;
-                userText.text += "down, ";
-            }
-            if (Input.GetKeyUp(KeyCode.RightArrow)) {
-                verDegree += 90f;
-                right = true;
-                userText.text += "right, ";
-            }
-            if (Input.GetKeyUp(KeyCode.LeftArrow)) {
-                verDegree -= 90f;
-                left = true;
-                userText.text += "left, ";
-            }
-           
-        }
-        cube.transform.localRotation = Quaternion.Lerp(cube.transform.localRotation, Quaternion.Euler(horDegree, verDegree, 0), speed * Time.deltaTime);
-    }
     
     public void debugMoveCube() {
         if (Input.GetKeyUp(KeyCode.RightArrow))

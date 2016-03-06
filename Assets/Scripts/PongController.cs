@@ -82,7 +82,7 @@ public class PongController : SimpleGestureListener {
         }
 
         if (Input.GetKeyUp(KeyCode.Escape))
-            pmh.pause();
+            pmh.pause(true);
 
 
     }
@@ -93,7 +93,7 @@ public class PongController : SimpleGestureListener {
         if (!pmh.isPaused) {
 
             if (gesture == KinectGestures.Gestures.Tpose) {
-                pmh.pause();
+                pmh.pause(true);
             }
 
         }

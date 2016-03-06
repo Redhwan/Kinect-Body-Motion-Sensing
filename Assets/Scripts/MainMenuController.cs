@@ -15,21 +15,25 @@ public class MainMenuController : SimpleGestureListener {
     }
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
-
         switch (gesture) {
             case KinectGestures.Gestures.SwipeUp:
                 Application.LoadLevel(2);
+                print("SwipeUp");
                 break;
             case KinectGestures.Gestures.SwipeRight:
                 Application.LoadLevel(3);
+                print("SwipeRight");
                 break;
             case KinectGestures.Gestures.SwipeLeft:
                 Application.LoadLevel(4);
+                print("SwipeLeft");
                 break;
             case KinectGestures.Gestures.SwipeDown:
                 Application.LoadLevel(5);
+                print("SwipeDown");
                 break;
         }
+
 
         return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
     }

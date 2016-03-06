@@ -66,11 +66,6 @@
      <Compile Include="Assets\KinectScripts\Samples\MouseControl.cs" />
      <Compile Include="Assets\KinectScripts\Samples\SetSceneAvatars.cs" />
      <Compile Include="Assets\KinectScripts\Samples\SimpleGestureListener.cs" />
-     <Compile Include="Assets\Old Scripts\ButtonManager.cs" />
-     <Compile Include="Assets\Old Scripts\MainMenuBM.cs" />
-     <Compile Include="Assets\Old Scripts\PlayButtonManager.cs" />
-     <Compile Include="Assets\Old Scripts\PlayPracticeController.cs" />
-     <Compile Include="Assets\Old Scripts\SettingsBM.cs" />
      <Compile Include="Assets\Scripts\AboutController.cs" />
      <Compile Include="Assets\Scripts\BallTrigger.cs" />
      <Compile Include="Assets\Scripts\CubeController.cs" />
@@ -80,6 +75,7 @@
      <Compile Include="Assets\Scripts\OptionMenuHandler.cs" />
      <Compile Include="Assets\Scripts\PauseMenuHandler.cs" />
      <Compile Include="Assets\Scripts\PongController.cs" />
+     <Compile Include="Assets\Scripts\Test.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\TextFiles\StartText.txt" />
  <Reference Include="UnityEngine.UI">
