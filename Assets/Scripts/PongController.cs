@@ -10,7 +10,7 @@ public class PongController : SimpleGestureListener {
     public float ballVelocity;
     private Rigidbody rb;
     private bool test;
-    public bool gameOver, gameStarted, startCount, restart, backToMain;
+    public bool gameStarted, startCount, restart, backToMain;
     private float timeLeft = 4;
     public Text counter;
     public int noOfCubes = 11;
@@ -39,12 +39,9 @@ public class PongController : SimpleGestureListener {
             rb.AddForce(new Vector3(ballVelocity, ballVelocity, 0));
             gameStarted = false;
         }
-        
-        if(noOfCubes == 0) {
-            gameIsWon();
-        }
+  
 
-        if (!gameOver) {
+        if (!pmh.gameOver) {
             if (!pmh.isPaused) {
                 var mousePositioin = Input.mousePosition;
                 mousePositioin.z = 9.5f;
@@ -52,19 +49,7 @@ public class PongController : SimpleGestureListener {
                 board.transform.position = (new Vector3(mousePositioin.x, board.transform.position.y, board.transform.position.z));
             }
         } else {
-            if (Input.GetKeyDown(KeyCode.R)) {
-                restart = true;
-            }
-            if (Input.GetKeyUp(KeyCode.Space)) {
-                backToMain = true;
-            }
 
-            if (restart) {
-                Application.LoadLevel(Application.loadedLevel);
-            }
-            if (backToMain) {
-                Application.LoadLevel(1);
-            }
         }
 
         
@@ -89,16 +74,13 @@ public class PongController : SimpleGestureListener {
 
 
     public override bool GestureCompleted(uint userId, int userIndex, KinectGestures.Gestures gesture, KinectWrapper.NuiSkeletonPositionIndex joint, Vector3 screenPos) {
-
         if (!pmh.isPaused) {
-
             if (gesture == KinectGestures.Gestures.Tpose) {
                 pmh.pause(true);
             }
-
         }
-
-        if (gameOver) {
+/*
+        if (pmh.gameOver) {
             if(gesture == KinectGestures.Gestures.SwipeRight) {
                 restart = true;
             }
@@ -106,7 +88,7 @@ public class PongController : SimpleGestureListener {
                 Application.LoadLevel(1);
             }
         }
-
+*/
         return base.GestureCompleted(userId, userIndex, gesture, joint, screenPos);
     }
 
@@ -116,13 +98,12 @@ public class PongController : SimpleGestureListener {
     }
 
     public void gameIsOver() {
-        gameOver = true;
-        counter.text = "Game Over\n Swipe Left to go to Main Menu, Swipe Right to retry";
+        pmh.gameIsOver();
     }
 
     public void gameIsWon() {
         rb.velocity = new Vector3(0f, 0f, 0f);
-        gameOver = true;
+        pmh.gameIsOver();
         counter.text = "Well Done!";
     }
 

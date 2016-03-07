@@ -25,6 +25,9 @@ public class BallTrigger : MonoBehaviour {
         if (col.gameObject.tag == "Cube") {
             Destroy(col.gameObject);
             pongC.noOfCubes--;
+            if (pongC.noOfCubes == 0) {
+                pongC.gameIsWon();
+            }
         }
     }
 

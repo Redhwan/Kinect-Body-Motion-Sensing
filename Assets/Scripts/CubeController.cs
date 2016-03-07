@@ -14,7 +14,7 @@ public class CubeController : SimpleGestureListener {
     public int curDir, score;
     public ArrayList dirs;
     public Text directionText, scoreText, userText;
-    public bool gameOver, roundComplete, inRound, restart, backToMain;
+    public bool roundComplete, inRound, restart, backToMain;
 
 
     // Use this for initialization
@@ -35,7 +35,7 @@ public class CubeController : SimpleGestureListener {
 	void Update () {
 
         if (!pmh.isPaused) {
-            if (!gameOver) {
+            if (!pmh.gameOver) {
                 checkRound();
                 doMove();
                 checkForMove();
@@ -129,7 +129,7 @@ public class CubeController : SimpleGestureListener {
                 curDir++;
                 up = false;
             } else {
-                gameOver = true;
+                pmh.gameOver = true;
             }
         }
 
@@ -141,7 +141,7 @@ public class CubeController : SimpleGestureListener {
                 curDir++;
                 down = false;
             } else {
-                gameOver = true;
+                pmh.gameOver = true;
             }
         }
 
@@ -153,7 +153,7 @@ public class CubeController : SimpleGestureListener {
                 curDir++;
                 right = false;
             } else {
-                gameOver = true;
+                pmh.gameOver = true;
             }
         }
 
@@ -165,11 +165,11 @@ public class CubeController : SimpleGestureListener {
                 curDir++;
                 left = false;
             } else {
-                gameOver = true;
+                pmh.gameOver = true;
             }
         }
 
-        if (gameOver) {
+        if (pmh.gameOver) {
             directionText.enabled = true;
             scoreText.text = "WRONG!";
         } else {
